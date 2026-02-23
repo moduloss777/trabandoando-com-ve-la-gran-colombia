@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goleador SMS Marketing Pro - Sistema Mejorado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .rate-info {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-card .label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input[type="file"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .helper-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .variables-info {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .variables-info code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e91e63;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .progress-stat {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .progress-stat .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .progress-stat .label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab.active {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        /* Sección de pruebas */
+        .test-section {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .test-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .test-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .test-form input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        /* Historial */
+        .historial-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .historial-section {
+            margin-bottom: 30px;
+        }
+
+        .historial-section h4 {
+            color: #667eea;
+            padding: 10px;
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .historial-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .historial-item.fallido {
+            border-left-color: #f44336;
+        }
+
+        .historial-item .numero {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .historial-item .hora {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .historial-item .mensaje {
+            margin: 10px 0;
+            color: #555;
+            font-size: 0.95em;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .historial-vacio {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .historial-vacio svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖Mensajeria Pablix el barto🤖</h1>
+            <div class="rate-info">
+                🚀 Haciendola REAL MADRID
+            </div>
+        </div>
+
+        <!-- Dashboard de Estadísticas -->
+        <div class="dashboard">
+            <div class="stat-card">
+                <div class="number" id="stat-enviados">0</div>
+                <div class="label">SMS Enviados</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-fallidos">0</div>
+                <div class="label">Fallidos</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-tasa">0%</div>
+                <div class="label">Tasa de Éxito</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-ultimo">-</div>
+                <div class="label">Último Envío</div>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="cambiarTab(0)">📤 Envío Masivo</button>
+                <button class="tab" onclick="cambiarTab(1)">🧪 Pruebas</button>
+                <button class="tab" onclick="cambiarTab(2)">📊 Historial</button>
+            </div>
+
+            <!-- Tab 1: Envío Masivo -->
+            <div class="tab-content active">
+                <form id="form-envio">
+                <div class="form-group">
+                    <label>📁 Archivo de Datos</label>
+                    <input type="file" name="archivo" id="archivo" accept=".csv,.txt,.xls,.xlsx" required>
+                    <div class="helper-text">
+                        Formatos aceptados: CSV, TXT, Excel | 
+                        <a href="/descargar-plantilla" class="download-link">⬇️ Descargar plantilla</a>
+                    </div>
+                </div>
+
+                <div class="variables-info">
+                    <strong>💡 Variables:</strong> Usa <code>{nombre_columna}</code> para personalizar.
+                    <br>
+                    <strong>Ejemplo:</strong> "Davivienda te notifica; transaccion realizada por <code>{monto}</code>"
+                    <br>
+                    <strong>🔗 Links dinámicos:</strong> Usa <code>{link}</code> para insertar URLs rotativas del acortador
+                </div>
+
+                <div class="form-group">
+                    <label>🔗 Campaña de URLs (Opcional)</label>
+                    <select name="campana_id" id="campana_id">
+                        <option value="">Sin link dinámico</option>
+                    </select>
+                    <div class="helper-text">
+                        Selecciona una campaña para usar links dinámicos con <code>{link}</code>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>✉️ Mensaje SMS</label>
+                    <textarea name="mensaje" id="mensaje" placeholder="Davivienda te notifica; transaccion realizada por {monto}, si no reconoces este movimiento cancela: {link}" required></textarea>
+                    <div class="helper-text">
+                        <span id="char-count">0</span> caracteres | 
+                        <span id="sms-count">0</span> SMS
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="btn-enviar">🚀 Enviar Campaña</button>
+            </form>
+
+            <!-- Barra de Progreso -->
+            <div class="progress-container" id="progress-container">
+                <h3>📊 Progreso del Envío</h3>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;">0%</div>
+                </div>
+
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <div class="value" id="prog-total">0</div>
+                        <div class="label">Total</div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="value" id="prog-procesados">0</div>
+                        <div class="label">Procesados</div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="value" id="prog-enviados">0</div>
+                        <div class="label">Enviados ✅</div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="value" id="prog-fallidos">0</div>
+                        <div class="label">Fallidos ❌</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <p id="tiempo-estimado"></p>
+                    <p style="color: #666; font-size: 0.9em; margin-top: 10px;">
+                        ⏰ El envío continúa en segundo plano. Puedes cerrar esta ventana.
+                    </p>
+                </div>
+            </div>
+
+            <div class="result" id="result"></div>
+        </div>
+
+        <!-- Tab 2: Pruebas -->
+        <div class="tab-content">
+            <div class="test-section">
+                <h3>🧪 Enviar SMS de Prueba</h3>
+                <p style="margin-bottom: 20px; color: #666;">
+                    Prueba tu mensaje antes de enviar la campaña masiva
+                </p>
+                
+                <form id="form-test" class="test-form">
+                    <div class="form-group">
+                        <label>📱 Número de Celular</label>
+                        <input type="text" id="test-numero" placeholder="3001234567" required>
+                        <div class="helper-text">10 dígitos, inicia con 3</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>✉️ Mensaje</label>
+                        <textarea id="test-mensaje" placeholder="Davivienda te notifica; transaccion realizada por 19.900" required style="min-height: 100px;"></textarea>
+                        <div class="helper-text">
+                            <span id="test-char-count">0</span> caracteres | 
+                            <span id="test-sms-count">0</span> SMS
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">📤 Enviar Prueba</button>
+                </form>
+
+                <div class="result" id="result-test" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Historial -->
+        <div class="tab-content">
+            <h3 style="margin-bottom: 20px;">📊 Historial de Envíos</h3>
+            <p style="margin-bottom: 20px; color: #666;">
+                Últimos 100 SMS enviados organizados por fecha
+            </p>
+            
+            <div class="historial-container" id="historial-container">
+                <div class="historial-vacio">
+                    <svg fill="#999" viewBox="0 0 24 24">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                    </svg>
+                    <p>No hay envíos registrados aún</p>
+                </div>
+            </div>
+        </div>
+
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        let intervalId = null;
+
+        // Cambiar tabs
+        function cambiarTab(index) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+
+            // Si se abre el historial, actualizarlo
+            if (index === 2) {
+                actualizarHistorial();
+            }
+        }
+
+        // Contador de caracteres para mensaje principal
+        document.getElementById('mensaje').addEventListener('input', function() {
+            const length = this.value.length;
+            const smsCount = Math.ceil(length / 160);
+            document.getElementById('char-count').textContent = length;
+            document.getElementById('sms-count').textContent = smsCount;
+        });
+
+        // Contador de caracteres para prueba
+        document.getElementById('test-mensaje').addEventListener('input', function() {
+            const length = this.value.length;
+            const smsCount = Math.ceil(length / 160);
+            document.getElementById('test-char-count').textContent = length;
+            document.getElementById('test-sms-count').textContent = smsCount;
+        });
+
+        // Actualizar historial
+        function actualizarHistorial() {
+            fetch('/stats')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('historial-container');
+                    
+                    if (!data.historial || data.historial.length === 0) {
+                        container.innerHTML = `
+                            <div class="historial-vacio">
+                                <svg fill="#999" viewBox="0 0 24 24">
+                                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                                </svg>
+                                <p>No hay envíos registrados aún</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // Organizar por fecha
+                    const porFecha = {};
+                    data.historial.forEach(item => {
+                        const fecha = item.fecha.split(' ')[0];
+                        if (!porFecha[fecha]) {
+                            porFecha[fecha] = [];
+                        }
+                        porFecha[fecha].push(item);
+                    });
+
+                    // Generar HTML
+                    let html = '';
+                    const fechasOrdenadas = Object.keys(porFecha).sort().reverse();
+                    
+                    fechasOrdenadas.forEach(fecha => {
+                        const items = porFecha[fecha].reverse(); // Más reciente primero
+                        const fechaFormateada = new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        
+                        html += `
+                            <div class="historial-section">
+                                <h4>📅 ${fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1)}</h4>
+                        `;
+                        
+                        items.forEach(item => {
+                            const icono = item.estado === 'exitoso' ? '✅' : '❌';
+                            const clase = item.estado === 'exitoso' ? '' : 'fallido';
+                            
+                            html += `
+                                <div class="historial-item ${clase}">
+                                    <div class="numero">${icono} ${item.numero}</div>
+                                    <div class="mensaje">${item.mensaje}</div>
+                                    <div class="hora">⏰ ${item.hora}</div>
+                                    ${item.error ? `<div style="color: #f44336; font-size: 0.85em; margin-top: 5px;">Error: ${item.error}</div>` : ''}
+                                </div>
+                            `;
+                        });
+                        
+                        html += '</div>';
+                    });
+
+                    container.innerHTML = html;
+                });
+        }
+
+        // Actualizar estadísticas globales
+        function actualizarStats() {
+            fetch('/stats')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('stat-enviados').textContent = data.total_enviados || 0;
+                    document.getElementById('stat-fallidos').textContent = data.total_fallidos || 0;
+                    
+                    const total = data.total_enviados + data.total_fallidos;
+                    const tasa = total > 0 ? Math.round((data.total_enviados / total) * 100) : 0;
+                    document.getElementById('stat-tasa').textContent = tasa + '%';
+                    
+                    const ultimo = data.ultimo_envio || '-';
+                    document.getElementById('stat-ultimo').textContent = ultimo.split(' ')[1] || ultimo;
+                });
+        }
+
+        // Actualizar progreso del envío actual
+        function actualizarProgreso() {
+            fetch('/progreso')
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.activo && data.procesados === 0) {
+                        return;
+                    }
+
+                    const porcentaje = data.total > 0 ? Math.round((data.procesados / data.total) * 100) : 0;
+                    
+                    document.getElementById('prog-total').textContent = data.total;
+                    document.getElementById('prog-procesados').textContent = data.procesados;
+                    document.getElementById('prog-enviados').textContent = data.enviados;
+                    document.getElementById('prog-fallidos').textContent = data.fallidos;
+                    
+                    const progressBar = document.getElementById('progress-bar-fill');
+                    progressBar.style.width = porcentaje + '%';
+                    progressBar.textContent = porcentaje + '%';
+
+                    // Si el proceso terminó
+                    if (!data.activo && data.procesados > 0) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                        
+                        const result = document.getElementById('result');
+                        result.classList.add('active', 'success');
+                        result.innerHTML = `
+                            <h3>✅ Envío Completado</h3>
+                            <p><strong>Total procesado:</strong> ${data.total}</p>
+                            <p><strong>Enviados:</strong> ${data.enviados} ✅</p>
+                            <p><strong>Fallidos:</strong> ${data.fallidos} ❌</p>
+                        `;
+
+                        document.getElementById('btn-enviar').disabled = false;
+                        actualizarStats();
+                    }
+                });
+        }
+
+        // Form envío masivo
+        document.getElementById('form-envio').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const result = document.getElementById('result');
+            const progressContainer = document.getElementById('progress-container');
+            const btnEnviar = document.getElementById('btn-enviar');
+            
+            result.classList.remove('active');
+            progressContainer.classList.remove('active');
+            btnEnviar.disabled = true;
+
+            try {
+                const response = await fetch('/enviar', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'processing') {
+                    progressContainer.classList.add('active');
+                    
+                    const tiempoEstimado = document.getElementById('tiempo-estimado');
+                    tiempoEstimado.textContent = `⏱️ Tiempo estimado: ${data.estimado_minutos} minutos | ${data.info_velocidad}`;
+                    
+                    if (intervalId) clearInterval(intervalId);
+                    intervalId = setInterval(actualizarProgreso, 2000);
+                    actualizarProgreso();
+                    
+                } else if (data.status === 'error') {
+                    result.classList.add('active', 'error');
+                    result.innerHTML = `<h3>❌ Error</h3><p>${data.message}</p>`;
+                    btnEnviar.disabled = false;
+                }
+            } catch (error) {
+                result.classList.add('active', 'error');
+                result.innerHTML = `<h3>❌ Error de Conexión</h3><p>${error.message}</p>`;
+                btnEnviar.disabled = false;
+            }
+        });
+
+        // Form prueba SMS
+        document.getElementById('form-test').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const numero = document.getElementById('test-numero').value;
+            const mensaje = document.getElementById('test-mensaje').value;
+            const result = document.getElementById('result-test');
+            const btnSubmit = this.querySelector('button[type="submit"]');
+            
+            btnSubmit.disabled = true;
+            result.classList.remove('active');
+            
+            try {
+                const response = await fetch('/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero, mensaje })
+                });
+
+                const data = await response.json();
+                
+                btnSubmit.disabled = false;
+                result.classList.add('active');
+                
+                if (data.status === 'ok') {
+                    result.className = 'result active success';
+                    result.innerHTML = `
+                        <h3>✅ SMS Enviado</h3>
+                        <p>${data.message}</p>
+                    `;
+                    actualizarStats();
+                    // Actualizar historial si está visible
+                    const historialTab = document.querySelectorAll('.tab-content')[2];
+                    if (historialTab.classList.contains('active')) {
+                        actualizarHistorial();
+                    }
+                } else {
+                    result.className = 'result active error';
+                    result.innerHTML = `
+                        <h3>❌ Error</h3>
+                        <p>${data.message}</p>
+                    `;
+                }
+            } catch (error) {
+                btnSubmit.disabled = false;
+                result.classList.add('active');
+                result.className = 'result active error';
+                result.innerHTML = `
+                    <h3>❌ Error de Conexión</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        });
+
+        // Actualizar stats cada 5 segundos
+        setInterval(actualizarStats, 5000);
+        actualizarStats();
+
+        // Cargar campañas del acortador
+        async function cargarCampanasAcortador() {
+            try {
+                const response = await fetch('/campanas-acortador');
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.campanas.length > 0) {
+                    const select = document.getElementById('campana_id');
+                    
+                    data.campanas.forEach(c => {
+                        const option = document.createElement('option');
+                        option.value = c.id;
+                        option.textContent = `${c.nombre} (${c.total_urls || 0} URLs, rotar cada ${c.rotar_cada})`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.log('No se pudieron cargar campañas del acortador:', error);
+            }
+        }
+
+        // Llamar al cargar la página
+        cargarCampanasAcortador();
+
+        // Verificar si hay proceso activo al cargar
+        fetch('/progreso')
+            .then(res => res.json())
+            .then(data => {
+                if (data.activo) {
+                    document.getElementById('progress-container').classList.add('active');
+                    document.getElementById('btn-enviar').disabled = true;
+                    intervalId = setInterval(actualizarProgreso, 2000);
+                    actualizarProgreso();
+                }
+            });
+    </script>
+</body>
+</html>
